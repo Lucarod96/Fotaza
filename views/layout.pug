@@ -1,13 +1,37 @@
 doctype html
-html
+html(lang="es")
   head
-  meta(charset='UTF-8')
-  meta(name="viewport", content="width=device-width, initial-scale=1.0")
-  
-  block metadata
+    meta(charset='UTF-8')
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    //- Cargamos primero el estilo general de la app
+    link(rel="stylesheet", href="/styles.css")
+    //- Acá se inyectará el título y los CSS específicos de cada página
+    block metadata
 
-  body 
-    nav 
-      a(href='/') Home
+  body
+    header
+      nav
+        //- Lado izquierdo: Inicio
+        .nav-logo
+          a(href='/') 📸 Fotaza 2
+
+        //- Centro: Buscador minimalista (Requisito Mínimo) [cite: 130]
+        .nav-search
+          form(action="/" method="GET")
+            input(type="text", name="search", placeholder="Buscar fotos o etiquetas...")
+            button(type="submit")
+              img(src="/images/lupa.png", alt="Buscar", class="search-icon")
+
+        //- Lado derecho: Enlaces necesarios para las funciones de regularizar [cite: 128]
+        .nav-links
+          a(href='/login') Iniciar Sesión
+          a(href='/registro') Registrarse
+          a(href='/publicacion/nueva') Subir Foto
+          a(href='/perfil/mi-usuario') Mi Perfil
+
     main
+      //- Acá se inyecta el contenido principal de la vista
       block content
+
+    footer
+      p &copy; #{new Date().getFullYear()} Fotaza 2 - Proyecto Integrador

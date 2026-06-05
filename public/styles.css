@@ -1,0 +1,207 @@
+/* --- ESTILOS GENERALES Y RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    color: #3897f0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* --- HEADER Y NAVBAR GLOBAL --- */
+header {
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #2d2d2d;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-logo a {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* --- BARRA DE BÚSQUEDA MINIMALISTA (BOTÓN TRANSPARENTE) --- */
+.nav-search form {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* El cuadro gris donde escribís */
+.nav-search input {
+    background-color: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    border-radius: 20px;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    width: 280px;
+    outline: none;
+    font-size: 0.9rem;
+    height: 36px;
+    transition: border-color 0.2s;
+}
+
+.nav-search input:focus {
+    border-color: #3897f0;
+}
+
+/* Forzamos a que ESTE submit sea transparente y del tamaño de la lupa */
+.nav-search button[type="submit"] {
+    background: transparent !important; /* El !important asegura romper el azul general */
+    border: none !important;
+    width: auto !important;             /* Saca el ancho del 100% */
+    margin: 0 !important;               /* Saca márgenes heredados */
+    padding: 0.4rem !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    box-shadow: none !important;        /* Saca sombras si las hubiera */
+    transition: transform 0.2s ease;
+}
+
+/* EFECTO HOVER: Se agranda solo la lupa cuando pasás el cursor */
+.nav-search button[type="submit"]:hover {
+    transform: scale(1.15);
+    background: transparent !important;
+}
+
+/* Tu ícono de Flaticon dentro del botón */
+.nav-search button .search-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+/* --- ENLACES DEL NAVBAR --- */
+.nav-links {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #b0b0b0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1, h2, h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+/* --- ESTILOS BASE PARA FORMULARIOS --- */
+.auth-container, .form-container {
+    background-color: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+    padding: 2.5rem;
+    max-width: 450px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #aaaaaa;
+}
+
+.form-group input, .form-group textarea {
+    background-color: #2a2a2a;
+    border: 1px solid #3d3d3d;
+    border-radius: 4px;
+    padding: 0.7rem;
+    color: #ffffff;
+    font-size: 0.95rem;
+    outline: none;
+    width: 100%;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #3897f0;
+}
+
+button[type="submit"] {
+    background-color: #3897f0;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.7rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2475c3;
+}
+
+/* --- FOOTER GLOBAL --- */
+footer {
+    background-color: #1a1a1a;
+    border-top: 1px solid #2d2d2d;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #777777;
+}
+
+footer .credits {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #555555;
+}

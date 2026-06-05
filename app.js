@@ -7,6 +7,7 @@ const PORT = process.env.PORT;
 const app = express();
 
 // MIDDLEWARES
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -17,6 +18,10 @@ app.set('views', './views');
 // RUTAS
 app.get('/', (req, res) => {
     res.render('index');
+})
+
+app.get('/', (req, res) => {
+    res.render('perfil');
 })
 
 // SERVIDOR
