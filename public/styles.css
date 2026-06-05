@@ -1,4 +1,4 @@
-/* --- ESTILOS GENERALES Y RESET --- */
+
 * {
     margin: 0;
     padding: 0;
@@ -24,7 +24,6 @@ a:hover {
     color: #0056b3;
 }
 
-/* --- HEADER Y NAVBAR GLOBAL --- */
 header {
     background-color: #1a1a1a;
     border-bottom: 1px solid #2d2d2d;
@@ -49,14 +48,12 @@ nav {
     color: #ffffff;
 }
 
-/* --- BARRA DE BÚSQUEDA MINIMALISTA (BOTÓN TRANSPARENTE) --- */
 .nav-search form {
     display: flex;
     align-items: center;
     gap: 0.3rem;
 }
 
-/* El cuadro gris donde escribís */
 .nav-search input {
     background-color: #2a2a2a;
     border: 1px solid #3d3d3d;
@@ -74,36 +71,33 @@ nav {
     border-color: #3897f0;
 }
 
-/* Forzamos a que ESTE submit sea transparente y del tamaño de la lupa */
+
 .nav-search button[type="submit"] {
-    background: transparent !important; /* El !important asegura romper el azul general */
+    background: transparent !important; 
     border: none !important;
-    width: auto !important;             /* Saca el ancho del 100% */
-    margin: 0 !important;               /* Saca márgenes heredados */
+    width: auto !important; 
+    margin: 0 !important; 
     padding: 0.4rem !important;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 36px;
-    box-shadow: none !important;        /* Saca sombras si las hubiera */
+    box-shadow: none !important;
     transition: transform 0.2s ease;
 }
 
-/* EFECTO HOVER: Se agranda solo la lupa cuando pasás el cursor */
 .nav-search button[type="submit"]:hover {
     transform: scale(1.15);
     background: transparent !important;
 }
 
-/* Tu ícono de Flaticon dentro del botón */
 .nav-search button .search-icon {
     width: 18px;
     height: 18px;
     object-fit: contain;
 }
 
-/* --- ENLACES DEL NAVBAR --- */
 .nav-links {
     display: flex;
     gap: 1.2rem;
@@ -120,7 +114,6 @@ nav {
     color: #ffffff;
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
 main {
     flex: 1;
     max-width: 1200px;
@@ -134,7 +127,6 @@ h1, h2, h3 {
     margin-bottom: 1rem;
 }
 
-/* --- ESTILOS BASE PARA FORMULARIOS --- */
 .auth-container, .form-container {
     background-color: #1a1a1a;
     border: 1px solid #2d2d2d;
@@ -190,7 +182,6 @@ button[type="submit"]:hover {
     background-color: #2475c3;
 }
 
-/* --- FOOTER GLOBAL --- */
 footer {
     background-color: #1a1a1a;
     border-top: 1px solid #2d2d2d;

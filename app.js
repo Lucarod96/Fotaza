@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import nuevaPublicacionRouter from './routes/nuevaPublicacion.js';
 
 // CONSTANTES
 const PORT = process.env.PORT;
@@ -16,13 +17,13 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 // RUTAS
+app.use('/publicaciones', nuevaPublicacionRouter);
+
 app.get('/', (req, res) => {
     res.render('index');
 })
 
-app.get('/', (req, res) => {
-    res.render('perfil');
-})
+
 
 // SERVIDOR
 app.listen(PORT, () => {

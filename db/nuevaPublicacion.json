@@ -1,0 +1,67 @@
+[
+  {
+    "id": 1,
+    "titulo": "Atardecer en las Sierras",
+    "descripcion": "Una toma limpia al caer la tarde, sin filtros.",
+    "imagenUrl": "https://picsum.photos/id/10/800/600",
+    "licencia": "sin copyright",
+    "fecha_creacion": "2026-06-01",
+    "autor": {
+      "id": 101,
+      "username": "marcos_fotos",
+      "seguidores_count": 42
+    },
+    "valoracion_promedio": 4.7,
+    "total_votos": 15,
+    "comentarios": [
+      {
+        "id": 1,
+        "username": "luca_prog",
+        "texto": "¡Qué locura de colores! Muy buena foto."
+      },
+      {
+        "id": 2,
+        "username": "ana_valle",
+        "texto": "Excelente encuadre, felicitaciones."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "titulo": "Lluvia en la Ciudad",
+    "descripcion": "Reflejos en el asfalto mojado durante la tormenta de anoche.",
+    "imagenUrl": "https://picsum.photos/id/12/800/600",
+    "licencia": "con copyright",
+    "fecha_creacion": "2026-06-03",
+    "autor": {
+      "id": 102,
+      "username": "clara_cam",
+      "seguidores_count": 128
+    },
+    "valoracion_promedio": 3.8,
+    "total_votos": 6,
+    "comentarios": [
+      {
+        "id": 3,
+        "username": "marcos_fotos",
+        "texto": "Me gusta mucho la atmósfera melancólica que lograste."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "titulo": "Minimalismo Estructural",
+    "descripcion": "Líneas rectas y sombras en arquitectura moderna.",
+    "imagenUrl": "https://picsum.photos/id/26/800/600",
+    "licencia": "sin copyright",
+    "fecha_creacion": "2026-06-04",
+    "autor": {
+      "id": 103,
+      "username": "enzo_design",
+      "seguidores_count": 5
+    },
+    "valoracion_promedio": 4.9,
+    "total_votos": 22,
+    "comentarios": []
+  }
+]
