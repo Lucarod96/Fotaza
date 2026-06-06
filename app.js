@@ -1,4 +1,5 @@
 import sequelize from './models/config.js';
+import { User } from './models/User.js';
 import 'dotenv/config';
 import express from 'express';
 
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
 
 // TEST DE CONEXIÓN A LA BASE DE DATOS
 try {
-    await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
     console.log('Conexión a PostgreSQL establecida con éxito!');
 } catch (error) {
     console.error('Error al conectar con la base de datos:', error);
