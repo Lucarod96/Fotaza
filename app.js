@@ -1,3 +1,4 @@
+import sequelize from './models/config.js';
 import 'dotenv/config';
 import express from 'express';
 
@@ -26,6 +27,14 @@ app.use('/profile', profileRouter);
 app.get('/', (req, res) => {
     res.render('index');
 })
+
+// TEST DE CONEXIÓN A LA BASE DE DATOS
+try {
+    await sequelize.authenticate();
+    console.log('Conexión a PostgreSQL establecida con éxito!');
+} catch (error) {
+    console.error('Error al conectar con la base de datos:', error);
+}
 
 // SERVIDOR
 app.listen(PORT, () => {
