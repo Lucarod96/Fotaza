@@ -1,6 +1,6 @@
 import sequelize from "./config.js";
 import { User } from "./User.js";
-// Pronto importaremos Post, Comentarios, etc.
+// Pronto importar modelos
 
 let associationsInitialized = false;
 
@@ -21,10 +21,19 @@ export async function connectDatabase() {
         await sequelize.authenticate();
         console.log('[+] Conexion a bd establecida');
         
-        await sequelize.sync({ alter: true });
-        console.log('[+] Modelos sincronizados correctamente');
     } catch (error) {
         console.error('[+] Error en la conexión a la base de datos:', error);
+        throw error;
+    }
+}
+
+export async function syncDatabase() {
+    try {
+        initializeAssociations();
+        await sequelize.sync({ alter: true });
+        console.log('[+] Base de datos inicializada y tablas creadas correctamente');
+    } catch (error) {
+        console.error('[+] Error al sincronizar las tablas:', error);
         throw error;
     }
 }
