@@ -38,8 +38,8 @@ User.init(
         sequelize, // Necesario para conectarse a la bd
         modelName: 'User', // Nombre del modelo
         tableName: 'usuarios', // Nombre de la tabla en Postgres
-        createdAt: true, 
-        deletedAt: true, // Soft delete (no borra el registro real, le pone fecha de baja)
+        createdAt: true, // cada vez que crea un usuario coloca la fecha de creacion
+        deletedAt: true, // cada vez que se elimina un usuario coloca la fecha de eliminacion
         hooks: {
             // Hook para encriptar la clave antes de guardarla
             beforeSave: async (usuario) => {

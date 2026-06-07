@@ -1,11 +1,10 @@
-import sequelize from './models/config.js';
-import { User } from './models/User.js';
 import 'dotenv/config';
 import express from 'express';
-
 import authRouter from './routes/auth.js';
 import postsRouter from './routes/posts.js';
 import profileRouter from './routes/profile.js';
+// import { User } from './models/User.js';
+import { connectDatabase } from './models/index.js';
 
 // CONSTANTES
 const PORT = process.env.PORT;
@@ -29,15 +28,30 @@ app.get('/', (req, res) => {
     res.render('index');
 })
 
-// TEST DE CONEXIÓN A LA BASE DE DATOS
-try {
-    await sequelize.sync({ alter: true });
-    console.log('Conexión a PostgreSQL establecida con éxito!');
-} catch (error) {
-    console.error('Error al conectar con la base de datos:', error);
-}
+// CONEXIÓN A BD Y ARRANQUE DEL SERVIDOR
+connectDatabase()
+    .then(() => {
+        app.listen(PORT, (err) => {
+            if(err) {
+                console.error('[+] Error al iniciar el servidor:', err);
+                return;
+            }
+            console.log(`[+] Servidor escuchando en el puerto ${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error('[+] Error sincronizando con bd:', err);
+    });
 
-// SERVIDOR
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
-});
+// // TEST DE CONEXIÓN A LA BASE DE DATOS
+// try {
+//     await sequelize.sync({ alter: true });
+//     console.log('Conexión a PostgreSQL establecida con éxito!');
+// } catch (error) {
+//     console.error('Error al conectar con la base de datos:', error);
+// }
+
+// // SERVIDOR
+// app.listen(PORT, () => {
+//     console.log(`Servidor escuchando en el puerto ${PORT}`);
+// });
