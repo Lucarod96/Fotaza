@@ -1,5 +1,6 @@
 import sequelize from "./config.js";
 import { User } from "./User.js";
+import { Post } from "./Post.js";
 // Pronto importar modelos
 
 let associationsInitialized = false;
@@ -9,8 +10,9 @@ export function initializeAssociations() {
         return;
     }
 
-    // Acá irán las relaciones en el futuro
-    // User.hasMany(Post, { foreignKey: 'userId' });
+    // RELACIÓN 1 A N (Un usuario tiene muchos posts, un post pertenece a un usuario)
+    User.hasMany(Post, { foreignKey: 'userId' });
+    Post.belongsTo(User, { foreignKey: 'userId' });
     
     associationsInitialized = true;
 }
