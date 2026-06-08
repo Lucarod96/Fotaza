@@ -1,6 +1,8 @@
 import sequelize from "./config.js";
 import { User } from "./User.js";
 import { Post } from "./Post.js";
+import { Comment } from "./Comment.js";
+import { Rating } from "./Rating.js";
 // Pronto importar modelos
 
 let associationsInitialized = false;
@@ -10,10 +12,29 @@ export function initializeAssociations() {
         return;
     }
 
-    // RELACIÓN 1 A N (Un usuario tiene muchos posts, un post pertenece a un usuario)
+    // RELACIÓN DE PUBLICACIONES 1 A N 
+    // (Un usuario tiene muchos posts, un post pertenece a un usuario)
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
     
+    // RELACIONES DE COMENTARIOS
+    // Un Usuario escribe muchos comentarios 1 A N 
+    User.hasMany(Comment, { foreignKey: 'userId' });
+    Comment.belongsTo(User, { foreignKey: 'userId' });
+
+    // Una Publicación contiene muchos comentarios 1 A N 
+    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Comment.belongsTo(Post, { foreignKey: 'postId' });
+
+    // RELACIONES DE VALORACIONES
+    // Un Usuario hace muchas valoraciones 1 A N
+    User.hasMany(Rating, { foreignKey: 'userId' });
+    Rating.belongsTo(User, { foreignKey: 'userId' });
+
+    // Una Publicación recibe muchas valoraciones 1 A N
+    Post.hasMany(Rating, { foreignKey: 'postId' });
+    Rating.belongsTo(Post, { foreignKey: 'postId' });
+
     associationsInitialized = true;
 }
 
