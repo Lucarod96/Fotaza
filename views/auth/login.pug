@@ -1,9 +1,24 @@
-extends ../layout.pug 
-
-block metadata 
-  title Fotaza - Iniciar Sesión
-  link(rel="stylesheet", href="/login.css")
+extends ../layout
 
 block content
-  h1 Iniciar Sesión
-  //- Acá irá el formulario de login más adelante
+  include ../mixins/alert
+  
+  +alert(alert)
+  div.container
+    div.form-wrapper
+      h1 Iniciar sesión
+      form(method='POST', action='/auth/login')
+        div.form-group
+          label(for='email') Email
+          input(type='email', id='email', name='email', required, value=formValues ? formValues.email : '')
+        
+        div.form-group
+          label(for='password') Contraseña
+          input(type='password', id='password', name='password', required, value=formValues ? formValues.password : '')
+        
+        div.form-group.center
+          button(type='submit') Ingresar
+        
+        p.redirect-link
+          | ¿No tienes cuenta? 
+          a(href='/auth/signup') Regístrate aquí

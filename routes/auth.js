@@ -1,22 +1,12 @@
 import { Router } from "express";
-const router = Router();
+import { login, loginForm, logout, signup, signupForm } from "../controller/auth.js";
 
-// Se muestran las vistas de Pug
-router.get('/login', (req, res) => {
-  res.render('auth/login');
-});
+const authRouter = Router();
 
-router.get('/signup', (req, res) => {
-  res.render('auth/signup');
-});
+authRouter.get('/login', loginForm);
+authRouter.post('/login', login);
+authRouter.get('/signup', signupForm);
+authRouter.post('/signup', signup);
+authRouter.post('/logout', logout);
 
-// Se procesan los formularios
-router.post('/login', (req, res) => {
-  res.send('Acá validaremos el login con la BD');
-});
-
-router.post('/signup', (req, res) => {
-  res.send('Acá guardaremos el nuevo usuario');
-});
-
-export default router;
+export default authRouter;

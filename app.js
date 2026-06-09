@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import session from 'express-session';
 import authRouter from './routes/auth.js';
 import postsRouter from './routes/posts.js';
 import profileRouter from './routes/profile.js';
@@ -12,6 +13,17 @@ const app = express();
 
 // MIDDLEWARES
 app.use(express.static('public'));
+app.use(session({
+    secret: process.env.SESSION_KEY || 'fotaza_secreto_super_seguro',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+    secure: false, // en producción se cambia a true
+    maxAge: 24 * 60 * 60 * 1000, // 24 horas
+    httpOnly: true,
+    sameSite: 'lax', 
+    },
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,7 +32,7 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 // RUTAS
-app.use('/', authRouter);
+app.use('/auth', authRouter);
 app.use('/posts', postsRouter);
 app.use('/profile', profileRouter);
 

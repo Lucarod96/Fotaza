@@ -1,9 +1,32 @@
-extends ../layout.pug 
-
-block metadata 
-  title Fotaza - Registrarse
-  link(rel="stylesheet", href="/signup.css")
+extends ../layout
 
 block content
-  h1 Registrarse 
-  //- Acá irá el formulario de signup más adelante
+  include ../mixins/alert
+
+  +alert(alert)
+  div.container
+    div.form-wrapper
+      h1 Registrarse
+      form(method='POST', action='/auth/signup')
+        div.form-group
+          label(for='username') Nombre de Usuario
+          input(type='text', id='username', name='username', required, value=formValues ? formValues.username : '')
+        
+        div.form-group
+          label(for='email') Email
+          input(type='email', id='email', name='email', required, value= formValues ? formValues.email : '')
+        
+        div.form-group
+          label(for='password') Contraseña
+          input(type='password', id='password', name='password', required, value= formValues ? formValues.password : '')
+        
+        div.form-group
+          label(for='confirmPassword') Confirmar Contraseña
+          input(type='password', id='confirmPassword', name='confirmPassword', required, value= formValues ? formValues.confirmPassword : '')
+        
+        div.form-group.center
+          button(type='submit') Registrarse
+        
+        p.redirect-link
+          | ¿Ya tienes cuenta? 
+          a(href='/auth/login') Inicia sesión aquí
