@@ -3,7 +3,7 @@ import { User } from "./User.js";
 import { Post } from "./Post.js";
 import { Comment } from "./Comment.js";
 import { Rating } from "./Rating.js";
-// Pronto importar modelos
+import { Follower } from "./Follower.js";
 
 let associationsInitialized = false;
 
@@ -34,6 +34,23 @@ export function initializeAssociations() {
     // Una Publicación recibe muchas valoraciones 1 A N
     Post.hasMany(Rating, { foreignKey: 'postId' });
     Rating.belongsTo(Post, { foreignKey: 'postId' });
+
+    // RELACIONES DE SEGUIDORES (Muchos a Muchos Autorreferencial)
+    // Los usuarios que yo sigo
+    User.belongsToMany(User, { 
+        through: Follower, 
+        as: 'Following', 
+        foreignKey: 'followerId', 
+        otherKey: 'followingId' 
+    });
+
+    // Los usuarios que me siguen a mí
+    User.belongsToMany(User, { 
+        through: Follower, 
+        as: 'Followers', 
+        foreignKey: 'followingId', 
+        otherKey: 'followerId' 
+    });
 
     associationsInitialized = true;
 }
