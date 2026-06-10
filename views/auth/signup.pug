@@ -1,31 +1,46 @@
 extends ../layout
 
-block content
-  include ../mixins/alert
+block styles
+  link(rel="stylesheet", href="/auth.css")
 
-  +alert(alert)
+block content
   div.container
     div.form-wrapper
       h1 Registrarse
-      form(method='POST', action='/auth/signup')
+      
+      //- Alerta global por si hay un error grave (como mail duplicado)
+      if alert && alert.status === 'error'
+        div.alerta-error
+          span #{alert.text}
+
+      form(method='POST', action='/auth/signup', novalidate)
         div.form-group
           label(for='username') Nombre de Usuario
-          input(type='text', id='username', name='username', required, value=formValues ? formValues.username : '')
+          //- Si hay error en username, la clase 'is-invalid'
+          input(type='text', id='username', name='username', class=(errors && errors.username ? 'is-invalid' : ''), value=formValues ? formValues.username : '')
+          if errors && errors.username
+            span.error-msg= errors.username[0]
         
         div.form-group
           label(for='email') Email
-          input(type='email', id='email', name='email', required, value= formValues ? formValues.email : '')
+          input(type='email', id='email', name='email', class=(errors && errors.email ? 'is-invalid' : ''), value= formValues ? formValues.email : '')
+          if errors && errors.email
+            span.error-msg= errors.email[0]
         
         div.form-group
           label(for='password') Contraseña
-          input(type='password', id='password', name='password', required, value= formValues ? formValues.password : '')
+          input(type='password', id='password', name='password', class=(errors && errors.password ? 'is-invalid' : ''), value= formValues ? formValues.password : '')
+          if errors && errors.password
+            span.error-msg= errors.password[0]
         
         div.form-group
           label(for='confirmPassword') Confirmar Contraseña
-          input(type='password', id='confirmPassword', name='confirmPassword', required, value= formValues ? formValues.confirmPassword : '')
+          input(type='password', id='confirmPassword', name='confirmPassword', class=(errors && errors.confirmPassword ? 'is-invalid' : ''), value= formValues ? formValues.confirmPassword : '')
+          if errors && errors.confirmPassword
+            span.error-msg= errors.confirmPassword[0]
         
         div.form-group.center
-          button(type='submit') Registrarse
+          button(type='submit', class='btn-primary') Registrarse
         
         p.redirect-link
           | ¿Ya tienes cuenta? 

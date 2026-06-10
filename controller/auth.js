@@ -1,4 +1,5 @@
 import { User } from "../models/User.js";
+import { userValidation } from "../helpers/validations.js";
 
 export async function loginForm(req, res) {
   res.render('auth/login');
@@ -9,9 +10,13 @@ export async function login(req, res) {
   const mail = email.trim();
   const pass = password.trim();
 
-  if(!mail || !pass ){
+  let errores = {};
+  if (!mail) errores.email = ["Por favor, ingresa tu correo electrónico."];
+  if (!pass) errores.password = ["Por favor, ingresa tu contraseña."];
+
+  if (Object.keys(errores).length > 0) {
     return res.status(400).render('auth/login', {
-      alert: { status: "error", text: "Complete todos los campos" },
+      errors: errores,
       formValues: req.body
     });
   }
@@ -19,35 +24,46 @@ export async function login(req, res) {
   try {
     const user = await User.findOne({ where: { email: mail } });
     
-    if(!user){
+    // Si el usuario no existe
+    if (!user) {
       return res.status(400).render('auth/login', {
-        alert: { status: "error", text: "Usuario o contraseña incorrecta." },
+        errors: { email: ["El correo electrónico no coincide con ninguna cuenta."] },
         formValues: req.body
       });
     }
 
     const isValidated = await user.validatePassword(pass);
 
-    if(!isValidated){
+    // Si la contraseña no coincide
+    if (!isValidated) {
       return res.status(400).render('auth/login', {
-        alert: { status: "error", text: "Usuario o contraseña incorrecta." },
+        errors: { password: ["La contraseña que ingresaste es incorrecta."] },
         formValues: req.body
       });
     }
 
-    // Si está todo OK, guardamos el ID en la sesión
+    // Si está todo OK, creamos la sesión
     req.session.user = { id: user.id };
     
+    // Forzamos el guardado asincrónico seguro
+    return req.session.save((err) => {
+      if (err) {
+        console.log('[!] Error al guardar sesión: ', err);
+        return res.status(500).render('auth/login', {
+          alert: { status: "error", text: "Hubo un error al procesar la sesión." },
+          formValues: req.body
+        });
+      }
+      return res.redirect('/');
+    });
+
   } catch (error) {
     console.log('[!] Error en login: ', error);
     return res.status(500).render('auth/login', {
-      alert: { status: "error", text: "Hubo un error al iniciar sesión" },
+      alert: { status: "error", text: "Hubo un error en el servidor al iniciar sesión." },
       formValues: req.body
     });
   }
-
-  // si esta todo ok => luego de redirecciona al home
-  res.redirect('/');
 }
 
 export async function signupForm(req, res) {
@@ -55,51 +71,36 @@ export async function signupForm(req, res) {
 }
 
 export async function signup(req, res) {
-  const { username, email, password, confirmPassword } = req.body;
+  const validacion = userValidation(req.body);
 
-  const userName = username.trim();
-  const mail = email.trim();
-  const pass = password.trim();
-  const confirmPass = confirmPassword.trim();
-
-  if(!userName || !mail || !pass || !confirmPass){
+  if (!validacion.success) {
     return res.status(400).render('auth/signup', {
-      alert: { status: "error", text: "No deben haber campos vacíos" },
+      errors: validacion.errors, 
       formValues: req.body
     });
   }
 
-  if(pass !== confirmPass){
-    return res.status(400).render('auth/signup', {
-      alert: { status: "error", text: "Las contraseñas no coinciden" },
-      formValues: req.body
-    });
-  }
+  const { username, email, password } = req.body;
 
   try {
-    const user = await User.create({
-      username: userName,
-      email: mail,
-      password: pass
+    await User.create({
+      username: username.trim(),
+      email: email.trim(),
+      password: password.trim()
     });
   } catch (error) {
     console.log(error);
-    res.status(500).render('auth/signup', {
-      alert: {
-        status: "error",
-        text: "Hubo un error al crear el usuario."
-      },
+    return res.status(500).render('auth/signup', {
+      alert: { status: "error", text: "Hubo un error al crear el usuario. Posible email duplicado." },
       formValues: req.body
     });
-    return;
   }
 
-  // si esta todo ok => luego de redirecciona al home
   res.redirect('/auth/login');
 }
 
 export async function logout(req, res) {
-  if(req.session){
+  if (req.session) {
     await req.session.destroy();
     res.redirect('/auth/login');
   }

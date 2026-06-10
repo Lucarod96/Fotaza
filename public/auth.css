@@ -1,0 +1,98 @@
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; 
+    padding: 20px;
+}
+
+.form-wrapper {
+    background-color: #222;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-wrapper h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444; 
+    background-color: #333; 
+    color: #fff;
+}
+
+.error-msg {
+    color: #ff5252;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: bold;
+    display: block; 
+}
+
+.is-invalid {
+    border: 2px solid #ff5252 !important;
+    background-color: rgba(255, 82, 82, 0.1) !important;
+}
+
+.alerta-error {
+    background-color: rgba(255, 82, 82, 0.1);
+    border: 1px solid #ff5252;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: #ff5252;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+form:invalid input:user-invalid {
+    border: 2px solid #ff5252;
+    background-color: rgba(255, 82, 82, 0.1); 
+}
+
+input:user-invalid ~ .error-msg {
+    display: block;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #2962ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #1c44b2;
+}
+
+.redirect-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
