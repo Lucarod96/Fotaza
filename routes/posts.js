@@ -1,15 +1,15 @@
 import { Router } from "express";
+import { getNewPost, postNewPost } from "../controller/post.js";
+import { authMiddleware } from "../middleware/auth.js";
+import { upload } from "../middleware/upload.js";
+
 const router = Router();
 
 // Formulario para crear publicación
-router.get('/new', (req, res) => {
-  res.render('newPost');
-});
+router.get('/new', authMiddleware, getNewPost);
 
 // Guardar la publicación en la BD
-router.post('/', (req, res) => {
-  res.send('Acá guardamos la foto en la BD');
-});
+router.post('/new', authMiddleware, upload.single('image'), postNewPost);
 
 // Ver el detalle de una publicación específica
 router.get('/:id', (req, res) => {

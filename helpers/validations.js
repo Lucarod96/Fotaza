@@ -21,8 +21,7 @@ const PostSchema = z.object({
         .min(5, "El título debe tener como mínimo 5 caracteres")
         .max(100, "El título debe tener como máximo 100 caracteres"),
     description: z.string("La descripción debe ser un texto").optional(),
-    imageUrl: z.string({ required_error: "La imagen es requerida" })
-        .url("Debe ser una URL válida"),
+    imageUrl: z.string({ required_error: "La imagen es requerida" }),
     license: z.string("La licencia debe ser un texto").optional()
 });
 

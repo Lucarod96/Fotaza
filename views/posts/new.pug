@@ -1,0 +1,36 @@
+extends ../layout
+
+block styles
+  link(rel="stylesheet", href="/auth.css")
+
+block content
+  div.container
+    div.form-wrapper
+      h1 Subir Nueva Foto
+      
+      if alert && alert.status === 'error'
+        div.alerta-error
+          span #{alert.text}
+
+      form(method='POST', action='/posts/new', enctype='multipart/form-data', novalidate)
+        
+        div.form-group
+          label(for='title') Título de la foto
+          input(type='text', id='title', name='title', required, placeholder="Ej: Atardecer en la montaña")
+        
+        div.form-group
+          label(for='image') Seleccionar Imagen
+          input(type='file', id='image', name='image', accept="image/png, image/jpeg, image/webp", required, style="background: transparent; padding: 0.5rem 0;")
+
+        div.form-group
+          label(for='description') Descripción
+          textarea(id='description', name='description', rows="4", placeholder="Cuenta algo sobre esta foto...")
+        
+        div.form-group
+          label(for='license') Licencia
+          select(id='license', name='license', style="background-color: #2a2a2a; color: #fff; border: 1px solid #3d3d3d; padding: 0.7rem; border-radius: 4px; width: 100%;")
+            option(value='Sin copyright') Dominio Público (Sin copyright)
+            option(value='Todos los derechos reservados') Todos los derechos reservados (Con Copyright)
+        
+        div.form-group.center
+          button(type='submit', class='btn-primary') Publicar Foto
