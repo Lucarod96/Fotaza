@@ -9,7 +9,7 @@ const router = Router();
 router.get('/new', authMiddleware, getNewPost);
 
 // Guardar la publicación en la BD
-router.post('/new', authMiddleware, upload.single('image'), postNewPost);
+router.post('/new', authMiddleware, upload.array('images', 10), postNewPost);
 
 // Ver el detalle de una publicación específica
 router.get('/:id', (req, res) => {

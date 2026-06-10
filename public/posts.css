@@ -1,0 +1,177 @@
+/* Contenedor principal del formulario con Glassmorphism */
+.form-wrapper {
+    max-width: 600px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: rgba(30, 30, 30, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Encabezado del Formulario */
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffffff, #a3a3a3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.form-header p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Estructura de Grupos de Formulario */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #b3b3b3;
+    margin-bottom: 0.5rem;
+}
+
+/* Inputs, Textareas y Selects */
+.form-group input[type='text'],
+.form-group textarea,
+.form-group select {
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    color: #fff;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group small {
+    color: #555;
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+}
+
+/* Efectos de Focus */
+.form-group input:focus, 
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #555;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+/* Zona Custom de Subida de Archivos (Drag & Drop look) */
+.upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+    background: #181818;
+    border: 2px dashed #333;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.upload-zone:hover {
+    border-color: #555;
+    background: #1f1f1f;
+}
+
+.upload-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.upload-text {
+    color: #e5e5e5;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.upload-subtext {
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+/* Ocultamos el input de archivo nativo feo */
+.upload-zone input[type='file'] {
+    display: none;
+}
+
+/* Wrapper para customizar la flechita del Select */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: '▾';
+    font-size: 1rem;
+    color: #666;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Botón de Publicar Estilo Premium */
+.btn-submit {
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    padding: 0.9rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-submit:hover {
+    background: #e5e5e5;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Alertas de error */
+.alerta-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+}

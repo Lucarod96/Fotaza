@@ -4,6 +4,8 @@ import { Post } from "./Post.js";
 import { Comment } from "./Comment.js";
 import { Rating } from "./Rating.js";
 import { Follower } from "./Follower.js";
+import { PostImage } from "./PostImage.js"; 
+import { Tag } from "./Tag.js";
 
 let associationsInitialized = false;
 
@@ -16,6 +18,14 @@ export function initializeAssociations() {
     // (Un usuario tiene muchos posts, un post pertenece a un usuario)
     User.hasMany(Post, { foreignKey: 'userId' });
     Post.belongsTo(User, { foreignKey: 'userId' });
+
+    // RELACIÓN DE IMÁGENES (1 Post -> Muchas Imágenes)
+    Post.hasMany(PostImage, { foreignKey: 'postId', onDelete: 'CASCADE' });
+    PostImage.belongsTo(Post, { foreignKey: 'postId' });
+
+    // RELACIÓN DE ETIQUETAS (Muchos Posts <-> Muchos Tags)
+    Post.belongsToMany(Tag, { through: 'publicacion_etiquetas', foreignKey: 'postId' });
+    Tag.belongsToMany(Post, { through: 'publicacion_etiquetas', foreignKey: 'tagId' });
     
     // RELACIONES DE COMENTARIOS
     // Un Usuario escribe muchos comentarios 1 A N 
@@ -23,7 +33,7 @@ export function initializeAssociations() {
     Comment.belongsTo(User, { foreignKey: 'userId' });
 
     // Una Publicación contiene muchos comentarios 1 A N 
-    Post.hasMany(Comment, { foreignKey: 'postId' });
+    Post.hasMany(Comment, { foreignKey: 'postId', onDelete: 'CASCADE' });
     Comment.belongsTo(Post, { foreignKey: 'postId' });
 
     // RELACIONES DE VALORACIONES
@@ -32,7 +42,7 @@ export function initializeAssociations() {
     Rating.belongsTo(User, { foreignKey: 'userId' });
 
     // Una Publicación recibe muchas valoraciones 1 A N
-    Post.hasMany(Rating, { foreignKey: 'postId' });
+    Post.hasMany(Rating, { foreignKey: 'postId', onDelete: 'CASCADE' });
     Rating.belongsTo(Post, { foreignKey: 'postId' });
 
     // RELACIONES DE SEGUIDORES (Muchos a Muchos Autorreferencial)

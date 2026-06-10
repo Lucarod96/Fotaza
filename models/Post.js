@@ -17,10 +17,6 @@ Post.init(
         description: {
             type: DataTypes.TEXT,
         },
-        imageUrl: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
-        },
         license: {
             type: DataTypes.STRING(50),
             defaultValue: 'sin copyright',

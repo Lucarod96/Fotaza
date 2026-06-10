@@ -1,13 +1,16 @@
 extends ../layout
 
 block styles
-  link(rel="stylesheet", href="/auth.css")
+  link(rel="stylesheet", href="/posts.css")
 
 block content
   div.container
     div.form-wrapper
-      h1 Subir Nueva Foto
       
+      div.form-header
+        h1 Comparte tu arte
+        p Sube tus mejores capturas a la comunidad
+
       if alert && alert.status === 'error'
         div.alerta-error
           span #{alert.text}
@@ -15,22 +18,57 @@ block content
       form(method='POST', action='/posts/new', enctype='multipart/form-data', novalidate)
         
         div.form-group
-          label(for='title') Título de la foto
+          label(for='title') Título de la obra
           input(type='text', id='title', name='title', required, placeholder="Ej: Atardecer en la montaña")
         
         div.form-group
-          label(for='image') Seleccionar Imagen
-          input(type='file', id='image', name='image', accept="image/png, image/jpeg, image/webp", required, style="background: transparent; padding: 0.5rem 0;")
+          label Fotografías
+          label.upload-zone(for='images')
+            span.upload-icon(id="uploadIcon") 📸
+            span.upload-text(id="uploadText") Seleccionar imágenes
+            span.upload-subtext(id="uploadSubtext") Puedes elegir varios archivos a la vez
+            input(type='file', id='images', name='images', accept="image/png, image/jpeg, image/webp", multiple, required)
 
         div.form-group
-          label(for='description') Descripción
-          textarea(id='description', name='description', rows="4", placeholder="Cuenta algo sobre esta foto...")
+          label(for='tags') Etiquetas
+          input(type='text', id='tags', name='tags', placeholder="Ej: paisaje, montaña, f1", required)
+          small Sepáralas usando comas
+
+        div.form-group
+          label(for='description') Historia detrás de la foto (Opcional)
+          textarea(id='description', name='description', rows="3", placeholder="Cuéntanos un poco más sobre este momento...")
         
         div.form-group
-          label(for='license') Licencia
-          select(id='license', name='license', style="background-color: #2a2a2a; color: #fff; border: 1px solid #3d3d3d; padding: 0.7rem; border-radius: 4px; width: 100%;")
-            option(value='Sin copyright') Dominio Público (Sin copyright)
-            option(value='Todos los derechos reservados') Todos los derechos reservados (Con Copyright)
+          label(for='license') Tipo de Licencia
+          div.select-wrapper
+            select(id='license', name='license')
+              option(value='Sin copyright') Dominio Público (Sin copyright)
+              option(value='Todos los derechos reservados') Todos los derechos reservados (Con Copyright)
         
-        div.form-group.center
-          button(type='submit', class='btn-primary') Publicar Foto
+        button(type='submit', class='btn-submit') Publicar en el Feed
+
+    script.
+        const fileInput = document.getElementById('images');
+        const uploadText = document.getElementById('uploadText');
+        const uploadSubtext = document.getElementById('uploadSubtext');
+        const uploadIcon = document.getElementById('uploadIcon');
+        const uploadZone = document.querySelector('.upload-zone');
+
+        fileInput.addEventListener('change', function() {
+          const cantidadArchivos = this.files.length;
+          
+          if (cantidadArchivos > 0) {
+            uploadIcon.textContent = '✔️';
+            uploadText.textContent = `¡${cantidadArchivos} ${cantidadArchivos === 1 ? 'imagen seleccionada' : 'imágenes seleccionadas'}!`;
+            uploadSubtext.textContent = 'Haz clic si deseas cambiar la selección';
+            
+            uploadZone.style.borderColor = '#10b981';
+            uploadZone.style.background = 'rgba(16, 185, 129, 0.02)';
+          } else {
+            uploadIcon.textContent = '📸';
+            uploadText.textContent = 'Seleccionar imágenes';
+            uploadSubtext.textContent = 'Puedes elegir varios archivos a la vez';
+            uploadZone.style.borderColor = '#333';
+            uploadZone.style.background = '#181818';
+          }
+        });
