@@ -24,6 +24,18 @@ app.use(session({
     sameSite: 'lax', 
     },
 }));
+
+// Middleware global para pasar los datos de la sesión a TODAS las vistas PUG
+app.use((req, res, next) => {
+    if (req.session && req.session.user) {
+        // Si hay sesión, pasamos el usuario a res.locals para que PUG lo lea como 'currentUser'
+        res.locals.currentUser = req.session.user; 
+    } else {
+        res.locals.currentUser = null;
+    }
+    next();
+    });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

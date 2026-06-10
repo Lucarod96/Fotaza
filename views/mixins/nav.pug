@@ -1,0 +1,28 @@
+mixin nav
+  header 
+    nav.navbar
+      
+      div.nav-brand
+        a(href="/") 📸 Fotaza
+        
+      div.nav-search
+        form(action="/search" method="GET")
+          input(type="text" name="q" placeholder="Buscar fotos o etiquetas...")
+          button(type="submit")
+            img(src="/images/lupa.png", alt="Buscar", class="search-icon")
+
+      div.nav-links
+        ul
+          if currentUser
+            li
+              a(href="/posts/nuevo") Subir Foto
+            li
+              a(href="/profile") Mi Perfil (@#{currentUser.username})
+            li
+              form(action="/auth/logout", method="POST", class="logout-form")
+                button(type="submit", class="btn-logout") Cerrar Sesión
+          else
+            li
+              a(href="/auth/login") Iniciar Sesión
+            li
+              a(href="/auth/signup") Registrarse

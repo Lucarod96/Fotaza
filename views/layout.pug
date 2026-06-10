@@ -3,27 +3,17 @@ html(lang="es")
   head
     meta(charset='UTF-8')
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Fotaza - Home
+    block metadata
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet")
     link(rel="stylesheet", href="/styles.css")
     block styles 
-    block metadata
 
   body
-    header
-      nav
-        .nav-logo
-          a(href='/') 📸 Fotaza
-
-        .nav-search
-          form(action="/" method="GET")
-            input(type="text", name="search", placeholder="Buscar fotos o etiquetas...")
-            button(type="submit")
-              img(src="/images/lupa.png", alt="Buscar", class="search-icon")
-
-        .nav-links
-          a(href='/auth/login') Iniciar Sesión
-          a(href='/auth/signup') Registrarse
-          a(href='/posts/new') Subir Foto
-          a(href='/profile/myProfile') Mi Perfil
+    include mixins/nav
+    +nav
 
     main
 

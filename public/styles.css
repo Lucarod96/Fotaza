@@ -1,9 +1,8 @@
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -12,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow-y: scroll;
 }
 
 a {
@@ -32,7 +32,7 @@ header {
     z-index: 1000;
 }
 
-nav {
+.navbar {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem 2rem;
@@ -42,7 +42,7 @@ nav {
     gap: 1.5rem;
 }
 
-.nav-logo a {
+.nav-brand a {
     font-size: 1.4rem;
     font-weight: bold;
     color: #ffffff;
@@ -51,7 +51,7 @@ nav {
 .nav-search form {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.5rem;
 }
 
 .nav-search input {
@@ -63,7 +63,6 @@ nav {
     width: 280px;
     outline: none;
     font-size: 0.9rem;
-    height: 36px;
     transition: border-color 0.2s;
 }
 
@@ -71,47 +70,56 @@ nav {
     border-color: #3897f0;
 }
 
-
-.nav-search button[type="submit"] {
-    background: transparent !important; 
-    border: none !important;
-    width: auto !important; 
-    margin: 0 !important; 
-    padding: 0.4rem !important;
+.nav-search button {
+    background: transparent;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 36px;
-    box-shadow: none !important;
+    padding: 0;
+    margin-left: 5px;
     transition: transform 0.2s ease;
-}
-
-.nav-search button[type="submit"]:hover {
-    transform: scale(1.15);
-    background: transparent !important;
 }
 
 .nav-search button .search-icon {
     width: 18px;
     height: 18px;
     object-fit: contain;
+    display: block; /* Evita espacios fantasmas abajo de la imagen */
 }
 
-.nav-links {
+.nav-search button:hover {
+    transform: scale(1.15);
+}
+
+.nav-links ul {
     display: flex;
-    gap: 1.2rem;
+    gap: 1.5rem;
     align-items: center;
+    list-style: none;
 }
 
-.nav-links a {
+.nav-links a, .btn-logout {
     color: #b0b0b0;
     font-size: 0.95rem;
     font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
 }
 
-.nav-links a:hover {
+.nav-links a:hover, .btn-logout:hover {
     color: #ffffff;
+}
+
+/* Reseteamos el formulario de logout para que no rompa la fila */
+.logout-form {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
 }
 
 main {
@@ -125,96 +133,6 @@ main {
 h1, h2, h3 {
     color: #ffffff;
     margin-bottom: 1rem;
-}
-
-.auth-container, .form-container {
-    background-color: #1a1a1a;
-    border: 1px solid #2d2d2d;
-    border-radius: 8px;
-    padding: 2.5rem;
-    max-width: 450px;
-    margin: 2rem auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-.form-group {
-    margin-bottom: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-group label {
-    font-size: 0.9rem;
-    color: #aaaaaa;
-}
-
-.form-group input, .form-group textarea {
-    background-color: #2a2a2a;
-    border: 1px solid #3d3d3d;
-    border-radius: 4px;
-    padding: 0.7rem;
-    color: #ffffff;
-    font-size: 0.95rem;
-    outline: none;
-    width: 100%;
-}
-
-.form-group input:focus, .form-group textarea:focus {
-    border-color: #3897f0;
-}
-
-button[type="submit"] {
-    background-color: #3897f0;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    padding: 0.7rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 0.5rem;
-    transition: background-color 0.2s ease;
-}
-
-button[type="submit"]:hover {
-    background-color: #2475c3;
-}
-
-.alerta-error {
-    background-color: #fce8e6;
-    border: 1px solid #f44336;
-    border-radius: 4px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    color: #c62828;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-}
-
-.form-group input:invalid {
-    box-shadow: none;
-}
-
-.error-msg {
-    display: none;
-    color: #f44336;
-    font-size: 12px;
-    margin-top: 5px;
-    font-weight: bold;
-}
-
-form:invalid input:user-invalid {
-    border: 1px solid #f44336;
-    background-color: #fce8e6;
-}
-
-input:user-invalid ~ .error-msg {
-    display: block;
 }
 
 footer {
