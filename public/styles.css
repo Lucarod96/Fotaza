@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #121212;
+    background-color: black;
     color: #e0e0e0;
     display: flex;
     flex-direction: column;
@@ -25,8 +25,7 @@ a:hover {
 }
 
 header {
-    background-color: #1a1a1a;
-    border-bottom: 1px solid #2d2d2d;
+    background: rgba(0, 0, 0, 0.5);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -86,7 +85,7 @@ header {
     width: 18px;
     height: 18px;
     object-fit: contain;
-    display: block; /* Evita espacios fantasmas abajo de la imagen */
+    display: block;
 }
 
 .nav-search button:hover {
@@ -136,8 +135,7 @@ h1, h2, h3 {
 }
 
 footer {
-    background-color: #1a1a1a;
-    border-top: 1px solid #2d2d2d;
+    background: rgba(0, 0, 0, 0.5);
     padding: 1.5rem;
     text-align: center;
     font-size: 0.85rem;

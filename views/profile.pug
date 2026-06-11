@@ -1,8 +1,48 @@
-extends layout.pug 
+extends layout.pug
 
-block metadata  
-  title Fotaza - Perfil
-  link(rel="stylesheet", href="/profile.css")
+block styles 
+  link(rel="stylesheet", href="/posts.css")
 
 block content
-  h1 Mi perfil
+  div.profile-header
+    div.profile-info-box
+      h1.profile-username @#{profileUser.username}
+      
+      //- Contadores
+      div.profile-stats
+        span.stat-item **12** publicaciones
+        span.stat-item **150** seguidores
+        span.stat-item **90** seguidos
+
+      //- Lógica del Botón Dinámico
+      if !isOwnProfile
+        if isFollowing
+          form(action=`/profile/${profileUser.username}/follow`, method="POST")
+            button(type="submit" class="btn-unfollow") Dejar de seguir
+        else
+          form(action=`/profile/${profileUser.username}/follow`, method="POST")
+            button(type="submit" class="btn-follow") Seguir
+            
+  //- Grilla de Publicaciones propia del Usuario
+  h2.profile-gallery-title Publicaciones
+  
+  if posts && posts.length > 0
+    div.posts-grid
+      each post in posts
+        div.post-card
+          if post.PostImages && post.PostImages.length > 0
+            div.post-image-wrapper
+              img(src=post.PostImages[0].imageUrl, alt=post.title)
+          else
+            div.post-image-placeholder Sin imagen
+            
+          div.post-info
+            h3= post.title
+            if post.description
+              p.post-desc= post.description
+            div.post-meta-footer
+              span.post-rating ★ 4.5
+              span.post-license #{post.license}
+  else
+    div.no-posts
+      p Este usuario todavía no tiene publicaciones compartidas.
