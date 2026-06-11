@@ -3,7 +3,7 @@ mixin nav
     nav.navbar
       
       div.nav-brand
-        a(href="/") 📸 Fotaza
+        a(href="/") Fotaza
         
       div.nav-search
         form(action="/posts" method="GET", class="search-form")
@@ -17,7 +17,7 @@ mixin nav
             li
               a(href="/posts/new") Subir Foto
             li
-              a(href="/profile") Mi Perfil (@#{currentUser.username})
+              a(href="/profile") @#{currentUser.username}
             li
               form(action="/auth/logout", method="POST", class="logout-form")
                 button(type="submit", class="btn-logout") Cerrar Sesión

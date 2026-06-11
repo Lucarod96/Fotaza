@@ -1,20 +1,18 @@
 import { Post } from "../models/Post.js";
 import { PostImage } from "../models/PostImage.js";
 import { User } from "../models/User.js";
+import { Follower } from "../models/Follower.js"; 
 
 // Renderiza el perfil del usuario logueado actualmente
 export async function getMyProfile(req, res) {
     try {
-        // req.session.user tiene los datos del usuario logueado en la sesión activa
         if (!req.session || !req.session.user) {
             return res.redirect('/auth/login');
         }
 
-        const myUsername = req.session.user.username;
+        const userId = req.session.user.id; 
 
-        // Buscamos al usuario en la BD para traer sus publicaciones
-        const user = await User.findOne({
-            where: { username: myUsername },
+        const user = await User.findByPk(userId, {
             include: [
                 {
                     model: Post,
@@ -24,12 +22,21 @@ export async function getMyProfile(req, res) {
             order: [[Post, 'createdAt', 'DESC']]
         });
 
-        // Renderizamos la vista pasándole 'isOwnProfile: true' para ocultar el botón Seguir
+        if (!user) {
+            return res.status(404).send('Usuario no encontrado.');
+        }
+
+        // 1. Contamos mis propias estadísticas
+        const followersCount = await Follower.count({ where: { followingId: userId } });
+        const followingCount = await Follower.count({ where: { followerId: userId } });
+        const postCount = user.Posts ? user.Posts.length : 0;
+
         res.render('profile', { 
             profileUser: user, 
             posts: user.Posts || [], 
             isOwnProfile: true,
-            isFollowing: false
+            isFollowing: false,
+            stats: { followers: followersCount, following: followingCount, posts: postCount }
         });
 
     } catch (error) {
@@ -44,12 +51,10 @@ export async function getUserProfile(req, res) {
         const targetUsername = req.params.username;
         const loggedInUser = req.session?.user;
 
-        // Si el usuario intenta buscar su propio username en la URL, lo mandamos a su sección nativa
         if (loggedInUser && loggedInUser.username === targetUsername) {
             return res.redirect('/profile');
         }
 
-        // Buscamos al usuario objetivo
         const user = await User.findOne({
             where: { username: targetUsername },
             include: [
@@ -65,23 +70,73 @@ export async function getUserProfile(req, res) {
             return res.status(404).send('Usuario no encontrado.');
         }
 
-        // Filtro de Seguridad por Copyright si el visitante es anónimo (Invitado)
         let postsFiltrados = user.Posts || [];
         if (!loggedInUser) {
             postsFiltrados = postsFiltrados.filter(post => post.license === 'Sin copyright');
         }
 
-        const isFollowing = false; 
+        // 2. Revisamos si el usuario logueado ya sigue a este perfil
+        let isFollowing = false;
+        if (loggedInUser) {
+            const checkFollow = await Follower.findOne({
+                where: { followerId: loggedInUser.id, followingId: user.id }
+            });
+            isFollowing = !!checkFollow; // Si encuentra el registro, es true
+        }
+
+        // 3. Contamos las estadísticas del usuario que estamos visitando
+        const followersCount = await Follower.count({ where: { followingId: user.id } });
+        const followingCount = await Follower.count({ where: { followerId: user.id } });
+        const postCount = postsFiltrados.length;
 
         res.render('profile', { 
             profileUser: user, 
             posts: postsFiltrados, 
             isOwnProfile: false,
-            isFollowing: isFollowing
+            isFollowing: isFollowing, // Le avisa al Pug si muestra "Seguir" o "Dejar de seguir"
+            stats: { followers: followersCount, following: followingCount, posts: postCount }
         });
 
     } catch (error) {
         console.error('Error al cargar el perfil del usuario:', error);
+        res.status(500).send('Error interno del servidor.');
+    }
+}
+
+// 4. Lógica para procesar el clic en Seguir / Dejar de seguir
+export async function toggleFollow(req, res) {
+    try {
+        const loggedInUserId = req.session.user.id;
+        const targetUsername = req.params.username;
+
+        const targetUser = await User.findOne({ where: { username: targetUsername } });
+
+        if (!targetUser) {
+            return res.status(404).send('Usuario no encontrado.');
+        }
+
+        if (targetUser.id === loggedInUserId) {
+            return res.redirect(`/profile/${targetUsername}`);
+        }
+
+        // Buscamos si ya existe el follow
+        const existingFollow = await Follower.findOne({
+            where: { followerId: loggedInUserId, followingId: targetUser.id }
+        });
+
+        if (existingFollow) {
+            // Si ya lo seguía, borramos la relación
+            await existingFollow.destroy();
+        } else {
+            // Si no lo seguía, lo agregamos a la tabla
+            await Follower.create({ followerId: loggedInUserId, followingId: targetUser.id });
+        }
+
+        // Recargamos la vista para que impacte el cambio
+        res.redirect(`/profile/${targetUsername}`);
+
+    } catch (error) {
+        console.error('Error al procesar el botón de seguir:', error);
         res.status(500).send('Error interno del servidor.');
     }
 }

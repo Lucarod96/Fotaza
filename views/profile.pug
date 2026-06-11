@@ -6,26 +6,24 @@ block styles
 block content
   div.profile-header
     div.profile-info-box
-      h1.profile-username @#{profileUser.username}
+      div.profile-name-row
+        h1.profile-username @#{profileUser.username}
+
+        if !isOwnProfile
+          if isFollowing
+            form(action=`/profile/${profileUser.username}/follow`, method="POST")
+              button(type="submit" class="btn-unfollow") Dejar de seguir
+          else
+            form(action=`/profile/${profileUser.username}/follow`, method="POST")
+              button(type="submit" class="btn-follow") Seguir
       
       //- Contadores
       div.profile-stats
-        span.stat-item **12** publicaciones
-        span.stat-item **150** seguidores
-        span.stat-item **90** seguidos
-
-      //- Lógica del Botón Dinámico
-      if !isOwnProfile
-        if isFollowing
-          form(action=`/profile/${profileUser.username}/follow`, method="POST")
-            button(type="submit" class="btn-unfollow") Dejar de seguir
-        else
-          form(action=`/profile/${profileUser.username}/follow`, method="POST")
-            button(type="submit" class="btn-follow") Seguir
+        span.stat-item #[strong #{stats.posts}] publicaciones
+        span.stat-item #[strong #{stats.followers}] seguidores
+        span.stat-item #[strong #{stats.following}] seguidos
             
   //- Grilla de Publicaciones propia del Usuario
-  h2.profile-gallery-title Publicaciones
-  
   if posts && posts.length > 0
     div.posts-grid
       each post in posts

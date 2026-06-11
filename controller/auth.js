@@ -43,7 +43,7 @@ export async function login(req, res) {
     }
 
     // Si está todo OK, creamos la sesión
-    req.session.user = { id: user.id };
+    req.session.user = { id: user.id, username: user.username };
     
     // Forzamos el guardado asincrónico seguro
     return req.session.save((err) => {
