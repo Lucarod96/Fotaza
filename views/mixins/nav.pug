@@ -6,9 +6,9 @@ mixin nav
         a(href="/") 📸 Fotaza
         
       div.nav-search
-        form(action="/post" method="GET", class="search-form")
-          input(type="text" name="q" placeholder="Buscar fotos o etiquetas...")
-          button(type="submit")
+        form(action="/posts" method="GET", class="search-form")
+          input(type="text" name="search" placeholder="Buscar por título, etiqueta o @usuario...", value=searchQuery)
+          button(type="submit", class="search-btn")
             img(src="/images/lupa.png", alt="Buscar", class="search-icon")
 
       div.nav-links
