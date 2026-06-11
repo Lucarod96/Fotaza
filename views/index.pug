@@ -19,9 +19,16 @@ block content
             
           div.post-info
             h3= post.title
+            
+            if post.User
+              p.post-author Por: @#{post.User.username}
+              
             if post.description
               p.post-desc= post.description
-            span.post-license #{post.license}
+              
+            div.post-meta-footer
+              span.post-rating ★ 4.5
+              span.post-license #{post.license}
   else
     div.no-posts
       p No hay publicaciones para mostrar todavía. ¡Sé el primero en subir una!

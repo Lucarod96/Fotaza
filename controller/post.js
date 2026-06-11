@@ -3,6 +3,8 @@ import { postValidation } from "../helpers/validations.js";
 import { Post } from "../models/Post.js";
 import { PostImage } from "../models/PostImage.js";
 import { Tag } from "../models/Tag.js";
+import { User } from "../models/User.js";
+import { Op } from 'sequelize';
 
 function getAuthenticatedUserId(req) {
   const userId = Number(req.user?.id);
@@ -115,22 +117,35 @@ export async function postNewPost(req, res) {
 // Muestra el feed de publicaciones en el Home
 export async function getHome(req, res) {
   try {
-    // Busca todas las publicaciones incluyendo sus imágenes relacionadas
+    const isLogedIn = !!(req.session && req.session.user);
+    
+    // Configuración del filtro condicional
+    let donde = {}; 
+    
+    // SI NO ESTÁ LOGUEADO: Solo traemos posts cuya licencia sea 'public'
+    if (!isLogedIn) {
+      donde.license = 'Sin copyright';
+    }
+
     const posts = await Post.findAll({
+      where: donde,
       include: [
         {
           model: PostImage,
-          attributes: ['imageUrl'], // Solo interesa la ruta de la foto
+          attributes: ['imageUrl'],
+        },
+        {
+          model: User,
+          attributes: ['username'] 
         }
       ],
-      order: [['createdAt', 'DESC']], // Las más nuevas primero
+      order: [['createdAt', 'DESC']],
     });
 
-    // Renderizamos el index pasando el array de publicaciones
     res.render('index', { posts });
 
   } catch (error) {
     console.error('Error al cargar el feed del Home:', error);
-    res.status(500).send('Error interno del servidor al cargar el feed.');
+    res.status(500).send('Error interno al cargar el feed.');
   }
 }

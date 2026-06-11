@@ -266,6 +266,28 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.post-author {
+    color: #64748b;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.post-meta-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    padding-top: 0.6rem;
+}
+
+.post-rating {
+    font-size: 0.85rem;
+    color: #e5e5e5;
+    font-weight: 600;
+}
+
 /* Responsividad */
 @media (max-width: 1000px) {
     .posts-grid {
