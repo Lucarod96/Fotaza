@@ -48,7 +48,7 @@ app.use('/posts', postsRouter);
 app.use('/profile', profileRouter);
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.redirect('/posts');
 });
 
 // CONEXIÓN A BD Y ARRANQUE DEL SERVIDOR

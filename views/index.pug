@@ -1,9 +1,27 @@
 extends layout.pug 
 
-block metadata 
-  title Fotaza - Home 
-  link(rel="stylesheet", href="/index.css")
+block styles 
+  link(rel="stylesheet", href="/posts.css")
 
 block content
-  h1 Fotaza 
-  p Bienvenido a la app
+
+  h1.feed-title Explorar
+  
+  if posts && posts.length > 0
+    div.posts-grid
+      each post in posts
+        div.post-card
+          if post.PostImages && post.PostImages.length > 0
+            div.post-image-wrapper
+              img(src=post.PostImages[0].imageUrl, alt=post.title)
+          else
+            div.post-image-placeholder Sin imagen
+            
+          div.post-info
+            h3= post.title
+            if post.description
+              p.post-desc= post.description
+            span.post-license #{post.license}
+  else
+    div.no-posts
+      p No hay publicaciones para mostrar todavía. ¡Sé el primero en subir una!

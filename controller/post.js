@@ -111,3 +111,26 @@ export async function postNewPost(req, res) {
     });
   }
 }
+
+// Muestra el feed de publicaciones en el Home
+export async function getHome(req, res) {
+  try {
+    // Busca todas las publicaciones incluyendo sus imágenes relacionadas
+    const posts = await Post.findAll({
+      include: [
+        {
+          model: PostImage,
+          attributes: ['imageUrl'], // Solo interesa la ruta de la foto
+        }
+      ],
+      order: [['createdAt', 'DESC']], // Las más nuevas primero
+    });
+
+    // Renderizamos el index pasando el array de publicaciones
+    res.render('index', { posts });
+
+  } catch (error) {
+    console.error('Error al cargar el feed del Home:', error);
+    res.status(500).send('Error interno del servidor al cargar el feed.');
+  }
+}
