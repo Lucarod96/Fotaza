@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node --watch app.js",
-    "db:init": "node db-init.js",
+    "db:init": "node seeders/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
