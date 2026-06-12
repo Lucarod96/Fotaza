@@ -11,8 +11,26 @@ block content
     div.post-main-content
       //- Visualización de la Imagen Principal
       if post.PostImages && post.PostImages.length > 0
-        div.detail-image-box
-          img(src=post.PostImages[0].imageUrl, alt=post.title)
+        div.carousel-container
+          //- Botón Izquierdo (solo si hay más de 1 foto)
+          if post.PostImages.length > 1
+            button.carousel-btn.carousel-btn-left(onclick="scrollCarousel(-1)") &#10094;
+          
+          div.detail-image-box(id="imageCarousel")
+            each image in post.PostImages
+              img(src=image.imageUrl, alt=post.title)
+              
+          //- Botón Derecho (solo si hay más de 1 foto)
+          if post.PostImages.length > 1
+            button.carousel-btn.carousel-btn-right(onclick="scrollCarousel(1)") &#10095;
+
+          //- Script para mover el carrusel
+          script.
+            function scrollCarousel(direction) {
+              const carousel = document.getElementById('imageCarousel');
+              const scrollAmount = carousel.clientWidth;
+              carousel.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+            }
       
       //- Datos de la publicación
       div.detail-info-box

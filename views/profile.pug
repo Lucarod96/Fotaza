@@ -30,14 +30,20 @@ block content
         div.post-card
           if post.PostImages && post.PostImages.length > 0
             div.post-image-wrapper
-              img(src=post.PostImages[0].imageUrl, alt=post.title)
+              //- El enlace que envuelve la imagen
+              a(href=`/posts/${post.id}`)
+                img(src=post.PostImages[0].imageUrl, alt=post.title)
           else
             div.post-image-placeholder Sin imagen
             
           div.post-info
-            h3= post.title
+            h3
+              //- El enlace en el título
+              a(href=`/posts/${post.id}` style="color: #fff; text-decoration: none;")= post.title
+              
             if post.description
               p.post-desc= post.description
+                
             div.post-meta-footer
               span.post-rating ★ 4.5
               span.post-license #{post.license}
