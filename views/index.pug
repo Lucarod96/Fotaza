@@ -15,12 +15,14 @@ block content
         div.post-card
           if post.PostImages && post.PostImages.length > 0
             div.post-image-wrapper
-              img(src=post.PostImages[0].imageUrl, alt=post.title)
+              a(href=`/posts/${post.id}`)
+                img(src=post.PostImages[0].imageUrl, alt=post.title)
           else
             div.post-image-placeholder Sin imagen
             
           div.post-info
-            h3= post.title
+            h3
+              a(href=`/posts/${post.id}` style="color: #fff; text-decoration: none;")= post.title
             
             if post.User
               p.post-author Por: 

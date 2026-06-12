@@ -1,0 +1,51 @@
+extends ../layout.pug
+
+block title
+  | Fotaza - #{post.title}
+
+block styles
+  link(rel="stylesheet", href="/posts.css")
+
+block content
+  div.detail-container
+    div.post-main-content
+      //- Visualización de la Imagen Principal
+      if post.PostImages && post.PostImages.length > 0
+        div.detail-image-box
+          img(src=post.PostImages[0].imageUrl, alt=post.title)
+      
+      //- Datos de la publicación
+      div.detail-info-box
+        h1= post.title
+        if post.User
+          p.detail-author Por: 
+            a(href=`/profile/${post.User.username}`, class="author-link") @#{post.User.username}
+        if post.description
+          p.detail-desc= post.description
+        span.post-license Licencia: #{post.license}
+
+    //- SECCIÓN DE COMENTARIOS
+    div.comments-section
+      h3 Comentarios (#{comments.length})
+      
+      //- Lista de comentarios
+      div.comments-list
+        if comments && comments.length > 0
+          each comment in comments
+            div.comment-card
+              p.comment-meta
+                strong @#{comment.User.username} 
+              p.comment-content= comment.content
+        else
+          p.no-comments Todavía no hay comentarios. ¡Sé el primero en opinar!
+
+      //- Formulario para comentar
+      if currentUser
+        form(action=`/posts/${post.id}/comments`, method="POST" class="comment-form")
+          div.form-group
+            textarea(name="content" placeholder="Escribe un comentario respetuoso..." rows="3" required)
+          button(type="submit" class="btn-submit" style="margin-top: 0.5rem;") Comentar
+      else
+        p.login-to-comment 
+          a(href="/auth/login") Inicia sesión
+          |  para dejar un comentario.

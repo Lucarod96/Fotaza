@@ -4,7 +4,9 @@ import { Post } from "../models/Post.js";
 import { PostImage } from "../models/PostImage.js";
 import { Tag } from "../models/Tag.js";
 import { User } from "../models/User.js";
+import { Comment } from "../models/Comment.js";
 import { Op } from 'sequelize';
+
 
 function getAuthenticatedUserId(req) {
   const userId = Number(req.user?.id);
@@ -194,5 +196,66 @@ export async function getHome(req, res) {
   } catch (error) {
     console.error('Error en el buscador del Feed:', error);
     res.status(500).send('Error interno al procesar la búsqueda.');
+  }
+}
+
+// 1. Mostrar el detalle de una publicación específica con sus comentarios
+export async function getPostDetail(req, res) {
+  try {
+    const postId = req.params.id;
+
+    // Buscamos el post por su ID, incluyendo sus imágenes, su autor y sus comentarios (con el autor de cada comentario)
+    const post = await Post.findByPk(postId, {
+      include: [
+        { model: PostImage, attributes: ['imageUrl'] },
+        { model: User, attributes: ['username'] },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['username'] }] // Trae el nombre de quién comentó
+        }
+      ],
+      order: [[Comment, 'createdAt', 'ASC']] // Los comentarios más viejos primero
+    });
+
+    if (!post) {
+      return res.status(404).send('Publicación no encontrada.');
+    }
+
+    res.render('posts/show', { post, comments: post.Comments || [] });
+
+  } catch (error) {
+    console.error('Error al cargar el detalle del post:', error);
+    res.status(500).send('Error interno del servidor.');
+  }
+}
+
+// 2. Guardar un comentario nuevo en la base de datos
+export async function postComment(req, res) {
+  try {
+    if (!req.session || !req.session.user) {
+      return res.status(401).send('Debes iniciar sesión para comentar.');
+    }
+
+    const postId = req.params.id;
+    const userId = req.session.user.id;
+    const { content } = req.body;
+
+    if (!content || content.trim() === '') {
+      return res.redirect(`/posts/${postId}`); // Si está vacío, recarga sin hacer nada
+    }
+
+    // Creamos el registro en la tabla usando tu modelo Comment
+    await Comment.create({
+      content: content.trim(),
+      postId: postId,
+      userId: userId
+    });
+
+    // Redireccionamos de vuelta al detalle del post para ver el comentario en vivo
+    res.redirect(`/posts/${postId}`);
+
+  } catch (error) {
+    console.error('Error al crear el comentario:', error);
+    res.status(500).send('Error interno al guardar el comentario.');
   }
 }

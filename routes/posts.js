@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getNewPost, postNewPost, getHome } from "../controller/post.js";
+import { getNewPost, postNewPost, getHome, getPostDetail, postComment } from "../controller/post.js";
 import { authMiddleware } from "../middleware/auth.js";
 import { upload } from "../middleware/upload.js";
 import multer from 'multer';
@@ -43,19 +43,15 @@ router.post('/new', authMiddleware, (req, res, next) => {
     });
 }, postNewPost);
 
-// 4. Ver el detalle de una publicación específica
-router.get('/:id', (req, res) => {
-    res.render('publicationDetails');
-});
+// 4. Ver el detalle de una publicación específica y sus comentarios
+router.get('/:id', getPostDetail);
 
-// 5. Procesar comentarios de la publicación
-router.post('/:id/comment', (req, res) => {
-    res.send('Acá guardamos el comentario');
-});
+// 5. Procesar el formulario de comentarios
+router.post('/:id/comments', authMiddleware, postComment);
 
-// 6. Procesar valoraciones con estrellitas
-router.post('/:id/rate', (req, res) => {
-    res.send('Acá guardamos las estrellitas');
+// 6. Procesar valoraciones con estrellitas (La dejamos lista para el próximo paso)
+router.post('/:id/rate', authMiddleware, (req, res) => {
+    res.send('Acá guardaremos las estrellitas');
 });
 
 export default router;

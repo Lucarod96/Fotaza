@@ -25,7 +25,7 @@ a:hover {
 }
 
 header {
-    background: rgba(0, 0, 0, 0.5);
+    background: black;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -54,12 +54,12 @@ header {
 }
 
 .nav-search input {
-    background-color: #2a2a2a;
-    border: 1px solid #3d3d3d;
+    background-color: black;
+    border: 1px solid #5a5a5a;
     border-radius: 20px;
     color: #ffffff;
     padding: 0.5rem 1rem;
-    width: 280px;
+    width: 310px;
     outline: none;
     font-size: 0.9rem;
     transition: border-color 0.2s;
@@ -82,8 +82,8 @@ header {
 }
 
 .nav-search button .search-icon {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
     display: block;
 }
