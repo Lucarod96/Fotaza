@@ -30,9 +30,20 @@ block content
               
             if post.description
               p.post-desc= post.description
+
+            if post.Tags && post.Tags.length > 0
+              div.post-tags
+                each etiqueta in post.Tags
+                  span.tag-badge #{etiqueta.name}
               
             div.post-meta-footer
-              span.post-rating ★ 4.5
+              if post.Ratings && post.Ratings.length > 0
+                - var suma = post.Ratings.reduce((a, b) => a + b.stars, 0)
+                - var prom = (suma / post.Ratings.length).toFixed(1)
+                span.post-rating(style="color: #ffffff;") ★ #{prom}
+              else
+                span.post-rating(style="color: #888;") ☆ Sin votos
+                
               span.post-license #{post.license}
   else
     div.no-posts

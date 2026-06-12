@@ -2,6 +2,8 @@ import { Post } from "../models/Post.js";
 import { PostImage } from "../models/PostImage.js";
 import { User } from "../models/User.js";
 import { Follower } from "../models/Follower.js"; 
+import { Tag } from "../models/Tag.js";
+import { Rating } from "../models/Rating.js";
 
 // Renderiza el perfil del usuario logueado actualmente
 export async function getMyProfile(req, res) {
@@ -16,7 +18,15 @@ export async function getMyProfile(req, res) {
             include: [
                 {
                     model: Post,
-                    include: [{ model: PostImage, attributes: ['imageUrl'] }]
+                    include: [
+                        { model: PostImage, attributes: ['imageUrl'] },
+                        { 
+                            model: Tag, 
+                            attributes: ['name'], 
+                            through: { attributes: [] }
+                        },
+                        { model: Rating, attributes: ['stars'] }
+                    ]
                 }
             ],
             order: [[Post, 'createdAt', 'DESC']]
@@ -60,7 +70,15 @@ export async function getUserProfile(req, res) {
             include: [
                 {
                     model: Post,
-                    include: [{ model: PostImage, attributes: ['imageUrl'] }]
+                    include: [
+                        { model: PostImage, attributes: ['imageUrl'] },
+                        { 
+                            model: Tag, 
+                            attributes: ['name'], 
+                            through: { attributes: [] }
+                        },
+                        { model: Rating, attributes: ['stars'] }
+                    ]
                 }
             ],
             order: [[Post, 'createdAt', 'DESC']]

@@ -4,7 +4,7 @@ block title
   | Fotaza - #{post.title}
 
 block styles
-  link(rel="stylesheet", href="/posts.css")
+  link(rel="stylesheet", href="/posts.css?v=2")
 
 block content
   div.detail-container
@@ -12,7 +12,6 @@ block content
       //- Visualización de la Imagen Principal
       if post.PostImages && post.PostImages.length > 0
         div.carousel-container
-          //- Botón Izquierdo (solo si hay más de 1 foto)
           if post.PostImages.length > 1
             button.carousel-btn.carousel-btn-left(onclick="scrollCarousel(-1)") &#10094;
           
@@ -20,7 +19,6 @@ block content
             each image in post.PostImages
               img(src=image.imageUrl, alt=post.title)
               
-          //- Botón Derecho (solo si hay más de 1 foto)
           if post.PostImages.length > 1
             button.carousel-btn.carousel-btn-right(onclick="scrollCarousel(1)") &#10095;
 
@@ -34,6 +32,11 @@ block content
       
       //- Datos de la publicación
       div.detail-info-box
+        //- PROMEDIO DE ESTRELLAS REAL
+        div.rating-display(style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;")
+          span(style="color: #f1c40f; font-size: 1.1rem;") ★ #{promedioEstrellas}
+          span(style="color: #666; font-size: 0.85rem;") (#{totalVotos} valoraciones)
+
         h1= post.title
         if post.User
           p.detail-author Por: 
@@ -41,6 +44,31 @@ block content
         if post.description
           p.detail-desc= post.description
         span.post-license Licencia: #{post.license}
+
+        //- FORMULARIO DINÁMICO DE ESTRELLAS (Solo usuarios registrados que no sean el autor)
+        if currentUser 
+          if currentUser.id !== post.userId
+            div.rate-action-box(style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.05);")
+              p(style="color: #888; margin-bottom: 0.4rem; font-size: 0.85rem;") Calificá esta publicación:
+              form(action=`/posts/${post.id}/rate`, method="POST" class="star-rating-form")
+                div.stars
+                  input(type="radio" id="star5" name="stars" value="5" onchange="this.form.submit()")
+                  label(for="star5" title="5 estrellas")
+                  
+                  input(type="radio" id="star4" name="stars" value="4" onchange="this.form.submit()")
+                  label(for="star4" title="4 estrellas")
+                  
+                  input(type="radio" id="star3" name="stars" value="3" onchange="this.form.submit()")
+                  label(for="star3" title="3 estrellas")
+                  
+                  input(type="radio" id="star2" name="stars" value="2" onchange="this.form.submit()")
+                  label(for="star2" title="2 estrellas")
+                  
+                  input(type="radio" id="star1" name="stars" value="1" onchange="this.form.submit()")
+                  label(for="star1" title="1 estrella")
+          else
+            div.rate-action-box(style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.05);")
+              p(style="color: #666; font-size: 0.85rem; font-style: italic;") Es tu publicación (no puedes autovalorarte).
 
     //- SECCIÓN DE COMENTARIOS
     div.comments-section

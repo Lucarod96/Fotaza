@@ -147,3 +147,40 @@ footer .credits {
     font-size: 0.75rem;
     color: #555555;
 }
+
+/*  SISTEMA DE ESTRELLAS */
+.star-rating-form {
+    display: inline-block;
+}
+
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+/* Oculta los círculos de opción nativos de HTML */
+.stars input[type="radio"] {
+    display: none !important;
+}
+
+.stars label {
+    font-size: 2.2rem;
+    color: #444;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0 0.15rem;
+}
+
+/* Inicializa los labels con una estrella vacía */
+.stars label::before {
+    content: '☆';
+}
+
+/* Cambia a estrellas llenas y amarillas al estar chequeado o hacer hover */
+.stars input:checked ~ label::before,
+.stars label:hover ~ label::before,
+.stars label:hover::before {
+    content: '★' !important;
+    color: #f1c40f !important; 
+}

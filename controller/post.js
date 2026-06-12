@@ -5,6 +5,7 @@ import { PostImage } from "../models/PostImage.js";
 import { Tag } from "../models/Tag.js";
 import { User } from "../models/User.js";
 import { Comment } from "../models/Comment.js";
+import { Rating } from "../models/Rating.js";
 import { Op } from 'sequelize';
 
 
@@ -118,7 +119,7 @@ export async function postNewPost(req, res) {
   }
 }
 
-// Muestra el feed de publicaciones en el Home (Con Buscador Avanzado integrado)
+// Muestra el feed de publicaciones en el Home
 export async function getHome(req, res) {
   try {
     const isLogedIn = !!(req.session && req.session.user);
@@ -141,6 +142,10 @@ export async function getHome(req, res) {
         model: User,
         where: dondeUser, // Aplica el filtro si se busca por @usuario
         attributes: ['username']
+      },
+      {
+        model: Rating,
+        attributes: ['stars']
       }
     ];
 
@@ -169,7 +174,7 @@ export async function getHome(req, res) {
           model: Tag,
           attributes: ['name'],
           through: { attributes: [] }, // Evita traer columnas basura de la tabla intermedia
-          required: false // true traería SOLO los que tienen etiquetas, false respeta títulos sin tags asociados
+          required: false 
         });
       }
     } else {
@@ -204,24 +209,39 @@ export async function getPostDetail(req, res) {
   try {
     const postId = req.params.id;
 
-    // Buscamos el post por su ID, incluyendo sus imágenes, su autor y sus comentarios (con el autor de cada comentario)
+    // Buscamos el post por su ID, incluyendo sus imágenes, su autor y sus comentarios
     const post = await Post.findByPk(postId, {
       include: [
         { model: PostImage, attributes: ['imageUrl'] },
         { model: User, attributes: ['username'] },
         {
           model: Comment,
-          include: [{ model: User, attributes: ['username'] }] // Trae el nombre de quién comentó
+          include: [{ model: User, attributes: ['username'] }]
         }
       ],
-      order: [[Comment, 'createdAt', 'ASC']] // Los comentarios más viejos primero
+      order: [[Comment, 'createdAt', 'ASC']]
     });
 
     if (!post) {
       return res.status(404).send('Publicación no encontrada.');
     }
 
-    res.render('posts/show', { post, comments: post.Comments || [] });
+    // CALCULAMOS EL PROMEDIO REAL DESDE LA TABLA VALORACIONES
+    const valoraciones = await Rating.findAll({ where: { postId: post.id } });
+    const totalVotos = valoraciones.length;
+    let promedio = 0;
+    
+    if (totalVotos > 0) {
+        const suma = valoraciones.reduce((acc, val) => acc + val.stars, 0);
+        promedio = (suma / totalVotos).toFixed(1);
+    }
+
+    res.render('posts/show', { 
+        post, 
+        comments: post.Comments || [],
+        promedioEstrellas: promedio,
+        totalVotos: totalVotos
+    });
 
   } catch (error) {
     console.error('Error al cargar el detalle del post:', error);
@@ -257,5 +277,56 @@ export async function postComment(req, res) {
   } catch (error) {
     console.error('Error al crear el comentario:', error);
     res.status(500).send('Error interno al guardar el comentario.');
+  }
+}
+
+// Guardar o actualizar la valoración de estrellas
+export async function postRate(req, res) {
+  try {
+    if (!req.session || !req.session.user) {
+      return res.status(401).send('Debes iniciar sesión para valorar.');
+    }
+
+    const postId = req.params.id;
+    const userId = req.session.user.id;
+    const puntaje = parseInt(req.body.stars); 
+
+    if (puntaje < 1 || puntaje > 5) {
+      return res.redirect(`/posts/${postId}`);
+    }
+
+    // 1. Buscamos el post para verificar quién es el dueño
+    const post = await Post.findByPk(postId);
+    if (!post) {
+        return res.status(404).send('Publicación no encontrada.');
+    }
+
+    // 2. El autor no puede valorar su propia publicación
+    if (post.userId === userId) {
+        return res.redirect(`/posts/${postId}`);
+    }
+
+    // 3. Buscamos si el usuario ya le había dado estrellas a esta foto antes
+    let valoracionPrevia = await Rating.findOne({ where: { postId: postId, userId: userId } });
+
+    if (valoracionPrevia) {
+      // Si ya existía, modificamos las estrellas por el nuevo puntaje
+      valoracionPrevia.stars = puntaje;
+      await valoracionPrevia.save();
+    } else {
+      // Si es la primera vez que vota esta foto, creamos el registro
+      await Rating.create({
+        stars: puntaje,
+        postId: postId,
+        userId: userId
+      });
+    }
+
+    // Redireccionamos al detalle para ver el impacto del promedio al instante
+    res.redirect(`/posts/${postId}`);
+
+  } catch (error) {
+    console.error('Error al guardar la valoración:', error);
+    res.status(500).send('Error interno al procesar las estrellas.');
   }
 }
