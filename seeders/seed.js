@@ -35,7 +35,7 @@ const postsData = [
   { title: "Siesta compartida", desc: "Phoebe y Eren recargando energías.", file: "phoeberen.jpg", userId: 1, tags: ["Gatos", "Siesta"] },
   { title: "Eren posando", desc: "Todo un modelo.", file: "eren.jpeg", userId: 1, tags: ["Gatos", "Facha"] },
   { title: "La clásica bolsa", desc: "Eren encontró su lugar favorito en el mundo.", file: "eren2.jpeg", userId: 1, tags: ["Gatos"] },
-  { title: "La clásica F40", desc: "El mejor auto de la historia.", file: "Ferrari f40.jpg", userId: 1, tags: ["Autos", "Clasico"] },
+  { title: "La clásica F40", desc: "El mejor auto de la historia.", file: "ferrarif40.jpg", userId: 1, tags: ["Autos", "Clasico"] },
 
   // USUARIO 2 "admin" - ID: 2
   { title: "Arte de ojo", desc: "Arte abstracto.", file: "arte1.jpeg", userId: 2, tags: ["Arte", "Abstracto"] },
